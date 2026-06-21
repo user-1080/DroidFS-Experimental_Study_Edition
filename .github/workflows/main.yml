@@ -1,0 +1,25 @@
+name: Manifest Prüfung - Manifest Extraktion
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Java JDK 17 aufbauen
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Motor (Gradle) starten
+      run: chmod +x gradlew
+      
+    - name: App simulieren und Manifeste zusammenrühren
+      run: ./gradlew processReleaseManifest
+      
+    - name: Zusammengeführtes Manifest sichern
+      uses: actions/upload-artifact@v4
+      with:
+        name: Finales-Merged-Manifest
+        path: app/build/intermediates/merged_manifest*/release/**/AndroidManifest.xml
