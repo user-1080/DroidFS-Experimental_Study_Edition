@@ -15,11 +15,13 @@ jobs:
     - name: Motor (Gradle) starten
       run: chmod +x gradlew
       
-    - name: App simulieren und Manifeste zusammenrühren
-      run: ./gradlew processReleaseManifest
+    - name: App komplett bauen und Manifest generieren
+      run: ./gradlew assembleRelease
       
-    - name: Zusammengeführtes Manifest sichern
+    - name: Fertige APK und Manifest sichern
       uses: actions/upload-artifact@v4
       with:
-        name: Finales-Merged-Manifest
-        path: app/build/intermediates/merged_manifest*/release/**/AndroidManifest.xml
+        name: DroidFS-ExperimentelleVer1.0.undManifest
+        path: |
+          app/build/outputs/apk/release/*.apk
+          app/build/intermediates/merged_manifest*/**/AndroidManifest.xml
